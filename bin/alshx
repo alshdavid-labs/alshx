@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -z "$1" ] ; then
+    echo "Please include script"
+    exit 1
+fi
+
+SCRIPT=$1
+ARGS=""
+i=0
+for ARG in "$@"
+do
+    if [ "$i" != 0 ]
+    then
+        ARGS="$ARGS $ARG"
+    fi
+    i=$(( $i + 1 ))
+done
+
+
+curl -s https://raw.githubusercontent.com/alshdavid/sh/master/scripts/$SCRIPT.sh?q=$(openssl rand -base64 12) | bash /dev/stdin $ARGS
