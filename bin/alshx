@@ -18,4 +18,4 @@ do
 done
 
 
-curl -s https://raw.githubusercontent.com/alshdavid/sh/master/scripts/$SCRIPT.sh?q=$(openssl rand -base64 12) | bash /dev/stdin $ARGS
+curl -s https://raw.githubusercontent.com/alshdavid/sh/master/scripts/$SCRIPT.sh?q=$(openssl rand -base64 12) | sh /dev/stdin $ARGS
