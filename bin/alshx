@@ -1,15 +1,16 @@
 #!/bin/sh
 
+URL=https://alshdavid.github.io/sh
+Q="q=$(openssl rand -base64 12)"
+
 if [ -z "$1" ] ; then
     echo "Please include script"
     exit 1
 fi
 
-Q="q=$(openssl rand -base64 12)"
-
 if [ $1 = "--upgrade" ] ; then
     BASEDIR=$(dirname "$0")
-    wget https://raw.githubusercontent.com/alshdavid/sh/master/bin/alshx?$Q -O $BASEDIR/alshx
+    wget $URL/bin/alshx?$Q -O $BASEDIR/alshx
     chmod +x $BASEDIR/alshx
     exit 0
 fi
@@ -26,5 +27,4 @@ do
     i=$(( $i + 1 ))
 done
 
-
-curl -s https://raw.githubusercontent.com/alshdavid/sh/master/scripts/$SCRIPT.sh?$Q | sh /dev/stdin $ARGS
+curl -s $URL/scripts/$SCRIPT.sh?$Q | sh /dev/stdin $ARGS
