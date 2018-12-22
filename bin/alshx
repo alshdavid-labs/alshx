@@ -1,8 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ -z "$1" ] ; then
     echo "Please include script"
     exit 1
+fi
+
+if [ $1 = "--upgrade" ] ; then
+    BASEDIR=$(dirname "$0")
+    wget https://raw.githubusercontent.com/alshdavid/sh/master/bin/alshx -O $BASEDIR/alshx
+    chmod x+ $BASEDIR/alshx
+    exit 0
 fi
 
 SCRIPT=$1
