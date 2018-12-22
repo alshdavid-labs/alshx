@@ -10,7 +10,7 @@ Q="q=$(openssl rand -base64 12)"
 if [ $1 = "--upgrade" ] ; then
     BASEDIR=$(dirname "$0")
     wget https://raw.githubusercontent.com/alshdavid/sh/master/bin/alshx?$Q -O $BASEDIR/alshx
-    chmod x+ $BASEDIR/alshx
+    chmod +x $BASEDIR/alshx
     exit 0
 fi
 
