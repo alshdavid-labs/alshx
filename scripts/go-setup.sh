@@ -2,7 +2,7 @@
 
 heading() {
     echo
-    echo "\x1B[32m\x1B[1m$1 (Installing)\x1B[0m"
+    echo "\x1B[32m\x1B[1m[Installing] $1\x1B[0m"
 }
 
 heading go-outline
