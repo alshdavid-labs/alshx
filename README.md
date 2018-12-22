@@ -1,16 +1,11 @@
-Use the utility in `/bin/alsh-script`
+Download `/bin/alshx` and add it to your `PATH`
 
 ```
-alsh-script script-name args
+alshx script-name arg1 arg2
 ```
 
-To use one of these scripts run
+Alternatively, you can use the scripts directly with
 
 ```
-curl -sL https://raw.githubusercontent.com/alshdavid/sh/master/hello-world.sh | bash -
-```
-or
-
-```
-sh <(curl -sL https://raw.githubusercontent.com/alshdavid/sh/master/hello-world.sh) arg1 arg2
+curl -s -f https://alshdavid.github.io/sh/scripts/{{script-name}}.sh | sh /dev/stdin arg1 arg2
 ```
