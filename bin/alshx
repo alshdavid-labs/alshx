@@ -8,7 +8,7 @@ if [ -z "$1" ] ; then
     exit 1
 fi
 
-if [ $1 = "--upgrade" ] ; then
+if [ $1 = "--upgrade" ] || [ $1 = "-u" ] || [ $1 = "--update" ] ; then
     BASEDIR=$(dirname "$0")
     wget $URL/bin/alshx?$Q -O $BASEDIR/alshx
     chmod +x $BASEDIR/alshx
