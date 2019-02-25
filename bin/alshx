@@ -15,6 +15,11 @@ if [ $1 = "--upgrade" ] || [ $1 = "-u" ] || [ $1 = "--update" ] ; then
     exit 0
 fi
 
+if [ $1 = "--list" ] || [ $1 = "-ls" || [ $1 = ".index" ] ] ; then
+    curl -s $URL/scripts/.index
+    exit 0
+fi
+
 SCRIPT=$1
 ARGS=""
 i=0
@@ -27,4 +32,4 @@ do
     i=$(( $i + 1 ))
 done
 
-curl -s $URL/scripts/$SCRIPT.sh?$Q | sh /dev/stdin $ARGS
+curl -s -f $URL/scripts/$SCRIPT.sh?$Q | sh /dev/stdin $ARGS
