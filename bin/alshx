@@ -15,7 +15,7 @@ if [ $1 = "--upgrade" ] || [ $1 = "-u" ] || [ $1 = "--update" ] ; then
     exit 0
 fi
 
-if [ $1 = "--list" ] || [ $1 = "-ls" || [ $1 = ".index" ] ] ; then
+if [ $1 = "--list" ] || [ $1 = "-ls" || [ $1 = ".index" ] ; then
     curl -s $URL/scripts/.index
     exit 0
 fi
