@@ -11,14 +11,14 @@ fi
 
 if [ $1 = "--install" ] || [ $1 = "-i" ] ; then
     echo $SCRIPTS_AUTH
-    curl -u $SCRIPTS_AUTH -o $INSTALL_DIR/zipx $URL/zipx?$Q
-    chmod +x $INSTALL_DIR/zipx
+    curl -u $SCRIPTS_AUTH -o $INSTALL_DIR/alshx $URL/alshx?$Q
+    chmod +x $INSTALL_DIR/alshx
     exit 0
 fi
 
 if [ $1 = "--upgrade" ] || [ $1 = "-u" ] || [ $1 = "--update" ] ; then
-    curl -u $SCRIPTS_AUTH -o $BASEDIR/zipx $URL/zipx?$Q
-    chmod +x $BASEDIR/zipx
+    curl -u $SCRIPTS_AUTH -o $BASEDIR/alshx $URL/alshx?$Q
+    chmod +x $BASEDIR/alshx
     exit 0
 fi
 
