@@ -1,7 +1,7 @@
 To use these scripts, install alshx, first run
 
 ```
-curl -s -f https://alshdavid.github.io/sh/bin/alshx --install
+sh <(curl -sL -u https://alshdavid.github.io/sh/bin/alshx) --install
 ```
 
 then use
