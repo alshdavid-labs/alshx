@@ -1,11 +1,16 @@
-Download `/bin/alshx` and add it to your `PATH`
+To use these scripts, install alshx, first run
 
 ```
-alshx script-name arg1 arg2
+curl -s -f https://alshdavid.github.io/sh/bin/alshx --install
 ```
 
-Alternatively, you can use the scripts directly with
+then use
 
 ```
-curl -s -f https://alshdavid.github.io/sh/scripts/{{script-name}}.sh | sh /dev/stdin arg1 arg2
+alshx [script_name] [...args]
+```
+eg:
+
+```
+alshx hello-world one two three
 ```
