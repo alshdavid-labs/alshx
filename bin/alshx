@@ -11,13 +11,13 @@ fi
 
 if [ $1 = "--install" ] || [ $1 = "-i" ] ; then
     echo $SCRIPTS_AUTH
-    curl -u $SCRIPTS_AUTH -o $INSTALL_DIR/alshx $URL/alshx?$Q
+    curl -o $INSTALL_DIR/alshx $URL/alshx?$Q
     chmod +x $INSTALL_DIR/alshx
     exit 0
 fi
 
 if [ $1 = "--upgrade" ] || [ $1 = "-u" ] || [ $1 = "--update" ] ; then
-    curl -u $SCRIPTS_AUTH -o $BASEDIR/alshx $URL/alshx?$Q
+    curl -o $BASEDIR/alshx $URL/alshx?$Q
     chmod +x $BASEDIR/alshx
     exit 0
 fi
@@ -39,4 +39,4 @@ do
     i=$(( $i + 1 ))
 done
 
-curl -s -f -u $SCRIPTS_AUTH $URL/$SCRIPT.sh?$Q | sh /dev/stdin $ARGS
+curl -s -f $URL/$SCRIPT.sh?$Q | sh /dev/stdin $ARGS
