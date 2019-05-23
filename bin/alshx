@@ -1,7 +1,7 @@
 #!/bin/sh
 BASEDIR=$(dirname "$0")
 INSTALL_DIR=/usr/local/bin
-URL=https://alshdavid.github.io/sh/scripts
+URL=https://alshdavid.github.io/sh
 Q="q=$(openssl rand -base64 12)"
 
 if [ -z "$1" ] ; then
@@ -39,4 +39,4 @@ do
     i=$(( $i + 1 ))
 done
 
-curl -s -f $URL/$SCRIPT.sh?$Q | sh /dev/stdin $ARGS
+curl -s -f $URL/scripts/$SCRIPT.sh?$Q | sh /dev/stdin $ARGS
