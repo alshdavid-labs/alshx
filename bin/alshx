@@ -39,4 +39,4 @@ do
     i=$(( $i + 1 ))
 done
 
-curl -s -f $URL/scripts/$SCRIPT.sh?$Q | sh /dev/stdin $ARGS
+curl -s -f $URL/scripts/$SCRIPT.sh?$Q | bash /dev/stdin $ARGS
