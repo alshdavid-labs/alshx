@@ -12,11 +12,22 @@
 # Usage: 
 #   sh npm-version-bouncer ./path/to/package.json
 #   sh npm-version-bouncer package-name version-number
+#
+# Args:
+#   --clean-exit - will exit with a statuscode 0 on failure
 # ---
 
 
 PACKAGE_NAME=""
 VERSION=""
+CLEAN_EXIT="false"
+
+for var in "$@"
+do
+    if [ $var = "--clean-exit" ]; then
+        CLEAN_EXIT="true"
+    fi
+done
 
 if [ -z "$1" ]; then
     echo "node-version-bouncer [package.json] || [packagename] [version]"    
@@ -51,7 +62,7 @@ CURRENT_VERSION=$(npm view $PACKAGE_NAME version)
 
 # Semver comparison taken and amended from:
 # https://github.com/substack/semver-compare/blob/master/index.js
-node -e "
+SUCCESS=$(node -e "
     let exit = (result, code) => { console.log(result); process.exit(code) }
     let pa = '$VERSION'.split('.')
     let pb = '$CURRENT_VERSION'.split('.')
@@ -59,10 +70,22 @@ node -e "
     for (let i = 0; i < 3; i++) {
         let na = Number(pa[i])
         let nb = Number(pb[i])
-        if (na > nb) exit('SUCCESS: Version $VERSION is a valid package version', 0)
-        if (nb > na) exit('ERROR: Version $VERSION is lower than the latest NPM package version', 1)
-        if (!isNaN(na) && isNaN(nb)) exit('SUCCESS: Version $VERSION is a valid package version', 0)
-        if (isNaN(na) && !isNaN(nb)) exit('ERROR: Version $VERSION is lower than the latest NPM package version', 1)
+        if (na > nb) exit('true', 0)
+        if (nb > na) exit('false', 0)
+        if (!isNaN(na) && isNaN(nb)) exit('true', 0)
+        if (isNaN(na) && !isNaN(nb)) exit('false', 0)
     }
-    exit('ERROR: Version $VERSION is the same as the latest NPM package version', 1)
-"
+    exit('false', 0)
+")
+if [ $SUCCESS = "true" ]; then
+    echo "SUCCESS: Version $VERSION is a valid package version"
+    exit 0
+fi
+if [ $SUCCESS = "false" ]; then
+    echo "ERROR: Version $VERSION is lower than the latest NPM package version"
+    if [ $CLEAN_EXIT = "true" ]; 
+    then
+        exit 0
+    fi
+    exit 1
+fi
