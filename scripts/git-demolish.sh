@@ -15,15 +15,19 @@ if [ "$1" = "-h" ] ; then
 fi
 
 INVERT_MATCH="master"
-INVERT_MATCH="$INVERT_MATCH\|$1"
-i=0
-for var in "$@"
-do
-    if [ "$i" != 0 ]
-    then
-        INVERT_MATCH="$INVERT_MATCH\|$var"
-    fi
-    i=$(( $i + 1 ))
-done
+if [ ! -z "$1" ] ; then
+    echo "running"
+    INVERT_MATCH="$INVERT_MATCH\|$1"
+    i=0
+    for var in "$@"
+    do
+        if [ "$i" != 0 ]
+        then
+            INVERT_MATCH="$INVERT_MATCH\|$var"
+        fi
+        i=$(( $i + 1 ))
+    done
+fi
+
 INVERT_MATCH="$INVERT_MATCH\|*"
 git branch | grep --invert-match $INVERT_MATCH | xargs git branch -D
