@@ -11,6 +11,7 @@ BRANCH_NAME=""
 WANTS_AMEND=$STAGE_UNSET
 
 WANTS_PUSH=$STAGE_SET
+
 for var in "$@"
 do
     if [ $WANTS_MESSAGE = $STAGE_PENDING ]; then
@@ -43,7 +44,6 @@ do
         WANTS_AMEND=$STAGE_SET
         continue
     fi
-    
 done
 
 if [ $WANTS_BRANCH = $STAGE_SET ]; then
