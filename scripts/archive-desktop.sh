@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$(ls $HOME/Desktop)" = "" ]; then
+  echo "Nothing to copy"
+  exit 0
+fi
+
 if [ "$ARCHIVE_DESKTOP_DEST" != "" ]; then
   DEST=$ARCHIVE_DESKTOP_DEST
 fi
@@ -33,3 +38,5 @@ else
   mkdir -p $OUT
   mv $HOME/Desktop/* $OUT
 fi
+
+echo "Desktop has been moved to: \"$OUT\""
