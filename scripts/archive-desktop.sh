@@ -5,6 +5,12 @@ if [ "$(ls $HOME/Desktop)" = "" ]; then
   exit 0
 fi
 
+DESKTOP=$HOME
+
+if [ "$ARCHIVE_DESKTOP_SRC" != "" ]; then
+  DESKTOP=$ARCHIVE_DESKTOP_SRC
+fi
+
 if [ "$ARCHIVE_DESKTOP_DEST" != "" ]; then
   DEST=$ARCHIVE_DESKTOP_DEST
 fi
@@ -33,10 +39,10 @@ YEAR=`date +%y`
 OUT="$DEST/$YEAR.$MONTH.$DAY"
 
 if [ -d "$OUT" ]; then
-  mv $HOME/Desktop/* $OUT
+  mv $DESKTOP/Desktop/* $OUT
 else
   mkdir -p $OUT
-  mv $HOME/Desktop/* $OUT
+  mv $DESKTOP/Desktop/* $OUT
 fi
 
 echo "Desktop has been moved to: \"$OUT\""
