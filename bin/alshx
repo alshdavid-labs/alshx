@@ -1,6 +1,5 @@
 #!/bin/sh
 BASEDIR=$(dirname "$0")
-INSTALL_DIR=/usr/local/bin
 URL=https://alshdavid.github.io/alshx
 Q="q=$(openssl rand -base64 12)"
 
@@ -11,19 +10,14 @@ fi
 
 if [ $1 = "--install" ] || [ $1 = "-i" ] ; then
     echo $SCRIPTS_AUTH
-    curl -o $INSTALL_DIR/alshx $URL/bin/alshx?$Q
-    chmod +x $INSTALL_DIR/alshx
+    curl -o $2/alshx $URL/bin/alshx?$Q
+    chmod +x $2/alshx
     exit 0
 fi
 
 if [ $1 = "--upgrade" ] || [ $1 = "-u" ] || [ $1 = "--update" ] ; then
     curl -o $BASEDIR/alshx $URL/bin/alshx?$Q
     chmod +x $BASEDIR/alshx
-    exit 0
-fi
-
-if [ $1 = "--list" ] || [ $1 = "-ls" ] || [ $1 = ".index" ] ; then
-    curl -s $URL/.index
     exit 0
 fi
 
