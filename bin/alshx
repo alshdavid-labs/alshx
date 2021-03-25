@@ -13,7 +13,7 @@ if [ $1 = "--install" ] || [ $1 = "-i" ] ; then
     curl -o $2/alshx $URL/bin/alshx?$Q
     chmod +x $2/alshx
     $(which dir) >> /dev/null 2>&1  
-    if ![ "$?" = "0" ]; then
+    if [ ! "$?" = "0" ]; then
       echo "Please add \"$2\" to \"\$PATH\" variable"
     fi
     exit 0
