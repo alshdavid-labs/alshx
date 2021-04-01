@@ -15,6 +15,7 @@ import (
 	"strings"
 )
 
+var version = "2"
 var latestCommitHash = github.LatestCommitHash()
 var homePath = getHomePath()
 var alshxPath = filepath.Join(homePath, ".alshx")
@@ -26,6 +27,7 @@ var archivePath = filepath.Join(alshxPath, archiveName)
 var commitHashPath = filepath.Join(alshxPath, commitHashName)
 var remoteArchiveURL = "https://github.com/alshdavid/alshx/archive/master.zip"
 var filePermissions fs.FileMode = 0755
+var scriptPath = ""
 
 func main() {
 	if len(os.Args) == 1 {
@@ -35,18 +37,40 @@ func main() {
 
 	var cmdArgs, script, scriptArgs = getArgs()
 	var logger = logging.NewLogger(cmdArgs.verbose)
+	scriptPath = filepath.Join(alshxBinPath, script)
+
+	if script == "version" {
+		logger.Log("Version:", version)
+		os.Exit(1)
+	}
 
 	if latestCommitHash == "" {
 		logger.Log("Error: Unable to get latest commit hash")
 		os.Exit(1)
 	}
+
 	logger.Info("CurrentHash:", latestCommitHash)
-	logger.Info("DirectoryPath:", alshxPath)
-	logger.Info("Verbose:", cmdArgs.verbose)
+	logger.Info("RootDirectory:", alshxPath)
 	logger.Info("Script:", script)
+	logger.Info("ScriptPath:", scriptPath)
 	logger.Info("Script Args:", scriptArgs)
 
-	// If .alshx doesn't exist, create it
+	prep(logger)
+
+	scripts.Exec(logger, scriptPath, script, scriptArgs)
+}
+
+func getHomePath() string {
+	if os.Getenv("ALSHX_PATH") != "" {
+		return os.Getenv("ALSHX_PATH")
+	}
+	if runtime.GOOS == "windows" {
+		return os.Getenv("USERPROFILE")
+	}
+	return os.Getenv("HOME")
+}
+
+func prep(logger *logging.Logger) {
 	if files.NotExists(alshxPath) {
 		os.Mkdir(alshxPath, filePermissions)
 	}
@@ -68,18 +92,6 @@ func main() {
 
 	os.RemoveAll(archivePath)
 	os.RemoveAll(alshxTempPath)
-
-	scripts.Exec(logger, filepath.Join(alshxBinPath, script), script, scriptArgs)
-}
-
-func getHomePath() string {
-	if os.Getenv("ALSHX_PATH") != "" {
-		return os.Getenv("ALSHX_PATH")
-	}
-	if runtime.GOOS == "windows" {
-		return os.Getenv("USERPROFILE")
-	}
-	return os.Getenv("HOME")
 }
 
 type args struct {

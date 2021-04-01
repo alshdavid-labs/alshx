@@ -15,15 +15,21 @@ func Exec(
 	name string,
 	args []string,
 ) {
-	config := &Meta{}
-	configBytes, _ := os.ReadFile(filepath.Join(folderPath, "meta.yaml"))
+	metaPath := filepath.Join(folderPath, "meta.yaml")
+	logger.Info("MetaPath:", metaPath)
+
+	config := &Meta{Args: []string{}}
+	configBytes, _ := os.ReadFile(metaPath)
 	yaml.UnmarshalStrict(configBytes, config)
 	config.Entrypoint = filepath.FromSlash(config.Entrypoint)
 
-	logger.Info("=== Script Details ===")
 	logger.Info("Language:", config.Language)
-	logger.Info("Entrypoint:", config.Entrypoint)
-	logger.Info("Command:", config.Entrypoint)
+	if config.Entrypoint != "" {
+		logger.Info("Entrypoint:", config.Entrypoint)
+	}
+	if config.Command != "" {
+		logger.Info("Command:", config.Command)
+	}
 
 	var cmd *exec.Cmd
 
@@ -31,7 +37,9 @@ func Exec(
 		cmd = exec.Command("go", "run", config.Entrypoint)
 	} else if config.Language == "ts-node" {
 		installNodeModules(logger, folderPath)
-		cmd = exec.Command("ts-node", append([]string{config.Entrypoint}, config.Args...)...)
+		cmdPath := append([]string{"npx", "ts-node", config.Entrypoint}, config.Args...)
+		logger.Info("Command:", cmdPath)
+		cmd = exec.Command(cmdPath[0], cmdPath[1:]...)
 	} else {
 		logger.Log("Unable to process script")
 		return
@@ -41,5 +49,6 @@ func Exec(
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+
 	cmd.Run()
 }
