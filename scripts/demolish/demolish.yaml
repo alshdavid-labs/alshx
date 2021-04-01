@@ -1,0 +1,3 @@
+language: shell
+action: run
+entrypoint: src/script.sh

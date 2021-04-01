@@ -1,0 +1,3 @@
+language: node
+action: run
+command: npm run start
