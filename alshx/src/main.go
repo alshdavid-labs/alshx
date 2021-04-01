@@ -69,7 +69,7 @@ func updateBin(logger *logging.Logger) {
 		return
 	}
 	logger.Log("Commit Hash Different: Downloading")
-	if files.NotExists(alshxBinPath) {
+	if files.Exists(alshxBinPath) {
 		os.RemoveAll(alshxBinPath)
 	}
 	download.DownloadFile(archivePath, remoteArchiveURL)
