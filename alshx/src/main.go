@@ -103,8 +103,9 @@ func prep(logger *logging.Logger) {
 
 	logger.Info("INFO: Updating commit hash")
 	os.RemoveAll(alshxTempPath)
-	os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
 	os.RemoveAll(archivePath)
+	os.RemoveAll(commitHashPath)
+	os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
 }
 
 func getHomePath() string {
