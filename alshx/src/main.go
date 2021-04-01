@@ -3,42 +3,53 @@ package main
 import (
 	"alshx/src/platform/archive"
 	"alshx/src/platform/download"
+	"alshx/src/platform/files"
+	"alshx/src/platform/github"
+	"alshx/src/platform/logging"
+	"alshx/src/platform/scripts"
 	"fmt"
+	"io/fs"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
+var latestCommitHash = github.LatestCommitHash()
 var homePath = getHomePath()
 var alshxPath = filepath.Join(homePath, ".alshx")
 var alshxBinPath = filepath.Join(alshxPath, "bin")
 var alshxTempPath = filepath.Join(alshxPath, "temp")
 var archiveName = "alshx.zip"
+var commitHashName = "commit-sha.txt"
 var archivePath = filepath.Join(alshxPath, archiveName)
+var commitHashPath = filepath.Join(alshxPath, commitHashName)
 var remoteArchiveURL = "https://github.com/alshdavid/alshx/archive/master.zip"
-var script = os.Args[1]
-var scriptArgs = os.Args[2:len(os.Args)]
+var filePermissions fs.FileMode = 0755
 
 func main() {
-	if _, err := os.Stat(alshxPath); os.IsNotExist(err) {
-		os.Mkdir(alshxPath, 0755)
-		os.Mkdir(alshxTempPath, 0755)
-		updateBin()
+	if len(os.Args) == 1 {
+		fmt.Println("Please include script to execute")
+		os.Exit(1)
 	}
 
-	fmt.Println(alshxPath)
-	fmt.Println(os.Args)
-	fmt.Println(script)
-	fmt.Println(scriptArgs)
+	var cmdArgs, script, scriptArgs = getArgs()
+	var logger = logging.NewLogger(cmdArgs.verbose)
 
-	cmd := exec.Command("echo", "ok")
+	logger.Info("CurrentHash:", github.LatestCommitHash())
+	logger.Info("DirectoryPath:", alshxPath)
+	logger.Info("Verbose:", cmdArgs.verbose)
+	logger.Info("Script:", script)
+	logger.Info("Script Args:", scriptArgs)
 
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	if files.NotExists(alshxPath) {
+		os.Mkdir(alshxPath, filePermissions)
+		os.Mkdir(alshxTempPath, filePermissions)
+	}
 
-	cmd.Run()
+	updateBin(logger)
+
+	scripts.Exec(logger, filepath.Join(alshxBinPath, script), script, scriptArgs)
 }
 
 func getHomePath() string {
@@ -51,12 +62,51 @@ func getHomePath() string {
 	return os.Getenv("HOME")
 }
 
-func updateBin() {
-	if _, err := os.Stat(alshxBinPath); !os.IsNotExist(err) {
+func updateBin(logger *logging.Logger) {
+	if files.Exists(commitHashPath) &&
+		files.ReadTextFile(commitHashPath) == latestCommitHash {
+		logger.Info("Commit Hash Match: Skipping")
+		return
+	}
+	logger.Log("Commit Hash Different: Downloading")
+	if files.NotExists(alshxBinPath) {
 		os.RemoveAll(alshxBinPath)
 	}
 	download.DownloadFile(archivePath, remoteArchiveURL)
 	archive.Unzip(archivePath, alshxTempPath)
 	os.Rename(filepath.Join(alshxTempPath, "alshx-master", "scripts"), alshxBinPath)
+	os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
+
 	os.RemoveAll(alshxTempPath)
+}
+
+type args struct {
+	verbose bool
+}
+
+func getArgs() (rootArgs args, script string, scriptArgs []string) {
+
+	args := os.Args[1:len(os.Args)]
+
+	targetArgs := false
+	for _, arg := range args {
+		if !targetArgs && strings.HasPrefix(arg, "-") {
+			if arg == "-v" {
+				rootArgs.verbose = true
+			}
+			continue
+		} else {
+			targetArgs = true
+		}
+		scriptArgs = append(scriptArgs, arg)
+	}
+
+	script = scriptArgs[0]
+	if len(scriptArgs) == 1 {
+		scriptArgs = []string{}
+	} else {
+		scriptArgs = scriptArgs[1:]
+	}
+
+	return rootArgs, script, scriptArgs
 }
