@@ -1,3 +1,0 @@
-version: 1
-language: ts-node
-entrypoint: ./src/index.ts

@@ -6,6 +6,7 @@ import (
 	"alshx/src/platform/files"
 	"alshx/src/platform/logging"
 	"alshx/src/platform/scripts"
+	_ "embed"
 	"fmt"
 	"io/fs"
 	"os"
@@ -13,8 +14,6 @@ import (
 	"runtime"
 	"strings"
 )
-
-var version = "2"
 
 // var latestCommitHash = github.LatestCommitHash()
 var homePath = getHomePath()
@@ -44,19 +43,19 @@ func main() {
 
 	if script == "version" {
 		logger.Log("Version:", version)
-		os.Exit(1)
+		os.Exit(0)
 	}
 
 	if script == "clean" {
 		logger.Log("Cleaning:", alshxPath)
 		os.RemoveAll(alshxPath)
-		os.Exit(1)
+		os.Exit(0)
 	}
 
 	if script == "update" {
 		logger.Log("Updating stash:", alshxPath)
 		updateStash(logger)
-		os.Exit(1)
+		os.Exit(0)
 	}
 
 	logger.Info("RootDirectory:", alshxPath)
@@ -64,7 +63,7 @@ func main() {
 	logger.Info("ScriptPath:", scriptPath)
 	logger.Info("Script Args:", scriptArgs)
 
-	if files.NotExists(alshxPath) {
+	if files.NotExists(alshxPath) || cmdArgs.latest {
 		updateStash(logger)
 	}
 
@@ -115,6 +114,7 @@ func getHomePath() string {
 
 type args struct {
 	verbose bool
+	latest  bool
 }
 
 func getArgs() (rootArgs args, script string, scriptArgs []string) {
@@ -126,6 +126,9 @@ func getArgs() (rootArgs args, script string, scriptArgs []string) {
 		if !targetArgs && strings.HasPrefix(arg, "-") {
 			if arg == "-v" {
 				rootArgs.verbose = true
+			}
+			if arg == "-l" {
+				rootArgs.latest = true
 			}
 			continue
 		} else {
