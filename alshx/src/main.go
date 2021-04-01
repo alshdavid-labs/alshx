@@ -52,7 +52,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	if script == "update" {
+	if script == "update" || script == "refresh" {
 		logger.Log("Updating stash:", alshxPath)
 		updateStash(logger)
 		os.Exit(0)

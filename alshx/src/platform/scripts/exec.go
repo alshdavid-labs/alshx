@@ -17,6 +17,14 @@ func Exec(
 	name string,
 	args []string,
 ) {
+	if files.NotExists(folderPath) && files.NotExists(cacheFolderPath) {
+		logger.Log("No script found")
+		return
+	}
+	if files.NotExists(folderPath) {
+		files.CopyDir(cacheFolderPath, folderPath)
+	}
+
 	metaFilePath := filepath.Join(folderPath, "meta.yaml")
 	newMetaFilePath := filepath.Join(cacheFolderPath, "meta.yaml")
 
