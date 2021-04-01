@@ -37,7 +37,9 @@ func Exec(
 		cmd = exec.Command("go", "run", config.Entrypoint)
 	} else if config.Language == "ts-node" {
 		installNodeModules(logger, folderPath)
-		cmdPath := append([]string{"npx", "ts-node", config.Entrypoint}, config.Args...)
+		cmdPath := []string{"npx", "ts-node", config.Entrypoint}
+		cmdPath = append(cmdPath, config.Args...)
+		cmdPath = append(cmdPath, args...)
 		logger.Info("Command:", cmdPath)
 		cmd = exec.Command(cmdPath[0], cmdPath[1:]...)
 	} else {

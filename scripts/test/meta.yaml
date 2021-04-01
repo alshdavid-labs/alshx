@@ -1,2 +1,2 @@
-language: eval
-entrypoint: go run src/main.go
+language: go
+entrypoint: ./src/main.go
