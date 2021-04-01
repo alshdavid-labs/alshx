@@ -1,2 +1,2 @@
-language: eval
-command: ts-node ./src/index.ts
+language: ts-node
+entrypoint: ./src/index.ts
