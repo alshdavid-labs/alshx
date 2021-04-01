@@ -20,6 +20,7 @@ var latestCommitHash = github.LatestCommitHash()
 var homePath = getHomePath()
 var alshxPath = filepath.Join(homePath, ".alshx")
 var alshxBinPath = filepath.Join(alshxPath, "bin")
+var alshxBinCachePath = filepath.Join(alshxPath, "bin-cache")
 var alshxTempPath = filepath.Join(alshxPath, "temp")
 var archiveName = "alshx.zip"
 var commitHashName = "commit-sha.txt"
@@ -28,6 +29,7 @@ var commitHashPath = filepath.Join(alshxPath, commitHashName)
 var remoteArchiveURL = "https://github.com/alshdavid/alshx/archive/master.zip"
 var filePermissions fs.FileMode = 0755
 var scriptPath = ""
+var scriptCachePath = ""
 
 func main() {
 	if len(os.Args) == 1 {
@@ -38,9 +40,16 @@ func main() {
 	var cmdArgs, script, scriptArgs = getArgs()
 	var logger = logging.NewLogger(cmdArgs.verbose)
 	scriptPath = filepath.Join(alshxBinPath, script)
+	scriptCachePath = filepath.Join(alshxBinCachePath, script)
 
 	if script == "version" {
 		logger.Log("Version:", version)
+		os.Exit(1)
+	}
+
+	if script == "clean" {
+		logger.Log("Cleaning:", alshxPath)
+		os.RemoveAll(alshxPath)
 		os.Exit(1)
 	}
 
@@ -57,7 +66,45 @@ func main() {
 
 	prep(logger)
 
-	scripts.Exec(logger, scriptPath, script, scriptArgs)
+	scripts.Exec(logger, scriptPath, scriptCachePath, script, scriptArgs)
+}
+
+func prep(logger *logging.Logger) {
+	if files.NotExists(alshxPath) {
+		os.Mkdir(alshxPath, filePermissions)
+	}
+
+	if files.Exists(alshxBinCachePath) &&
+		files.Exists(alshxBinPath) &&
+		files.Exists(commitHashPath) &&
+		files.ReadTextFile(commitHashPath) == latestCommitHash {
+		logger.Info("Commit Hash Match: Skipping")
+		return
+	}
+
+	logger.Log("Commit Hash Different: Downloading")
+
+	if files.Exists(alshxBinCachePath) {
+		logger.Info("INFO: Deleting Bin Cache")
+		os.RemoveAll(alshxBinCachePath)
+	}
+
+	logger.Info("INFO: Downloading repo")
+	download.DownloadFile(archivePath, remoteArchiveURL)
+	archive.Unzip(archivePath, alshxTempPath)
+	logger.Info("INFO: Creating bin cache folder")
+	files.CopyDir(filepath.Join(alshxTempPath, "alshx-master", "scripts"), alshxBinCachePath)
+
+	if files.NotExists(alshxBinPath) {
+		logger.Info("INFO: Creating bin folder")
+		files.CopyDir(filepath.Join(alshxTempPath, "alshx-master", "scripts"), alshxBinPath)
+		os.RemoveAll(alshxTempPath)
+	}
+
+	logger.Info("INFO: Updating commit hash")
+	os.RemoveAll(alshxTempPath)
+	os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
+	os.RemoveAll(archivePath)
 }
 
 func getHomePath() string {
@@ -68,30 +115,6 @@ func getHomePath() string {
 		return os.Getenv("USERPROFILE")
 	}
 	return os.Getenv("HOME")
-}
-
-func prep(logger *logging.Logger) {
-	if files.NotExists(alshxPath) {
-		os.Mkdir(alshxPath, filePermissions)
-	}
-
-	if files.Exists(commitHashPath) &&
-		files.ReadTextFile(commitHashPath) == latestCommitHash {
-		logger.Info("Commit Hash Match: Skipping")
-		return
-	}
-
-	logger.Log("Commit Hash Different: Downloading")
-	if files.Exists(alshxBinPath) {
-		os.RemoveAll(alshxBinPath)
-	}
-	download.DownloadFile(archivePath, remoteArchiveURL)
-	archive.Unzip(archivePath, alshxTempPath)
-	os.Rename(filepath.Join(alshxTempPath, "alshx-master", "scripts"), alshxBinPath)
-	os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
-
-	os.RemoveAll(archivePath)
-	os.RemoveAll(alshxTempPath)
 }
 
 type args struct {

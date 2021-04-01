@@ -1,6 +1,7 @@
 package scripts
 
 import (
+	"alshx/src/platform/files"
 	"alshx/src/platform/logging"
 	"os"
 	"os/exec"
@@ -12,33 +13,43 @@ import (
 func Exec(
 	logger *logging.Logger,
 	folderPath string,
+	cacheFolderPath string,
 	name string,
 	args []string,
 ) {
-	metaPath := filepath.Join(folderPath, "meta.yaml")
-	logger.Info("MetaPath:", metaPath)
+	metaFilePath := filepath.Join(folderPath, "meta.yaml")
+	newMetaFilePath := filepath.Join(cacheFolderPath, "meta.yaml")
 
-	config := &Meta{Args: []string{}}
-	configBytes, _ := os.ReadFile(metaPath)
-	yaml.UnmarshalStrict(configBytes, config)
-	config.Entrypoint = filepath.FromSlash(config.Entrypoint)
+	logger.Info("MetaPath:", metaFilePath)
+	logger.Info("MetaCachePath:", newMetaFilePath)
 
-	logger.Info("Language:", config.Language)
-	if config.Entrypoint != "" {
-		logger.Info("Entrypoint:", config.Entrypoint)
+	meta := loadConfig(metaFilePath)
+	newerMeta := loadConfig(newMetaFilePath)
+
+	if newerMeta.Version > meta.Version {
+		logger.Info("Updating script with newer version", meta.Version, ">", newerMeta.Version)
+		os.RemoveAll(folderPath)
+		files.CopyDir(cacheFolderPath, folderPath)
 	}
-	if config.Command != "" {
-		logger.Info("Command:", config.Command)
+
+	logger.Info("Language:", meta.Language)
+	if meta.Entrypoint != "" {
+		logger.Info("Entrypoint:", meta.Entrypoint)
+	}
+	if meta.Command != "" {
+		logger.Info("Command:", meta.Command)
 	}
 
 	var cmd *exec.Cmd
 
-	if config.Language == "go" {
-		execGo(logger, cmd, config, args)
-	} else if config.Language == "ts-node" {
-		execTsNode(logger, cmd, config, args, folderPath)
-	} else if config.Language == "node" {
-		execNode(logger, cmd, config, args, folderPath)
+	if meta.Language == "go" {
+		cmd = execGo(logger, cmd, meta, args)
+	} else if meta.Language == "ts-node" {
+		cmd = execTsNode(logger, cmd, meta, args, folderPath)
+	} else if meta.Language == "node" {
+		cmd = execNode(logger, cmd, meta, args, folderPath)
+	} else if meta.Language == "shell" {
+		cmd = execShell(logger, cmd, meta, args, folderPath)
 	} else {
 		logger.Log("Unable to process script")
 		return
@@ -50,4 +61,12 @@ func Exec(
 	cmd.Stderr = os.Stderr
 
 	cmd.Run()
+}
+
+func loadConfig(path string) *Meta {
+	config := &Meta{Args: []string{}}
+	configBytes, _ := os.ReadFile(path)
+	yaml.UnmarshalStrict(configBytes, config)
+	config.Entrypoint = filepath.FromSlash(config.Entrypoint)
+	return config
 }
