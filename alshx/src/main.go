@@ -54,27 +54,28 @@ func main() {
 	}
 
 	if script == "update" {
+		logger.Log("Updating stash:", alshxPath)
 		updateStash(logger)
 		os.Exit(1)
 	}
 
-	// if latestCommitHash == "" {
-	// 	logger.Log("Error: Unable to get latest commit hash")
-	// 	os.Exit(1)
-	// }
-
-	// logger.Info("CurrentHash:", latestCommitHash)
 	logger.Info("RootDirectory:", alshxPath)
 	logger.Info("Script:", script)
 	logger.Info("ScriptPath:", scriptPath)
 	logger.Info("Script Args:", scriptArgs)
 
-	prep(logger)
+	if files.NotExists(alshxPath) {
+		updateStash(logger)
+	}
 
 	scripts.Exec(logger, scriptPath, scriptCachePath, script, scriptArgs)
 }
 
 func updateStash(logger *logging.Logger) {
+	if files.NotExists(alshxPath) {
+		os.Mkdir(alshxPath, filePermissions)
+	}
+
 	if files.Exists(alshxBinCachePath) {
 		logger.Info("INFO: Deleting Bin Cache")
 		os.RemoveAll(alshxBinCachePath)
@@ -83,7 +84,7 @@ func updateStash(logger *logging.Logger) {
 	logger.Info("INFO: Downloading repo")
 	err := download.DownloadFile(archivePath, remoteArchiveURL)
 	if err != nil {
-		logger.Log("Failed to download archive")
+		logger.Log("Failed to download archive", err)
 		os.Exit(1)
 	}
 	archive.Unzip(archivePath, alshxTempPath)
@@ -100,24 +101,6 @@ func updateStash(logger *logging.Logger) {
 	os.RemoveAll(alshxTempPath)
 	os.RemoveAll(archivePath)
 	os.RemoveAll(commitHashPath)
-}
-
-func prep(logger *logging.Logger) {
-	if files.NotExists(alshxPath) {
-		os.Mkdir(alshxPath, filePermissions)
-	}
-
-	if files.Exists(alshxBinCachePath) &&
-		files.Exists(alshxBinPath) &&
-		files.Exists(commitHashPath) {
-		// files.ReadTextFile(commitHashPath) == latestCommitHash {
-		logger.Info("Commit Hash Match: Skipping")
-		return
-	}
-
-	logger.Log("Commit Hash Different: Downloading")
-
-	// os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
 }
 
 func getHomePath() string {
