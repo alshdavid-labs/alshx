@@ -90,7 +90,11 @@ func prep(logger *logging.Logger) {
 	}
 
 	logger.Info("INFO: Downloading repo")
-	download.DownloadFile(archivePath, remoteArchiveURL)
+	err := download.DownloadFile(archivePath, remoteArchiveURL)
+	if err != nil {
+		logger.Log("Failed to download archive")
+		os.Exit(1)
+	}
 	archive.Unzip(archivePath, alshxTempPath)
 	logger.Info("INFO: Creating bin cache folder")
 	scriptsPath := filepath.Join(alshxTempPath, "alshx-master", "scripts")
