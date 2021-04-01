@@ -46,12 +46,28 @@ func main() {
 	logger.Info("Script:", script)
 	logger.Info("Script Args:", scriptArgs)
 
+	// If .alshx doesn't exist, create it
 	if files.NotExists(alshxPath) {
 		os.Mkdir(alshxPath, filePermissions)
-		os.Mkdir(alshxTempPath, filePermissions)
 	}
 
-	updateBin(logger)
+	if files.Exists(commitHashPath) &&
+		files.ReadTextFile(commitHashPath) == latestCommitHash {
+		logger.Info("Commit Hash Match: Skipping")
+		return
+	}
+
+	logger.Log("Commit Hash Different: Downloading")
+	if files.Exists(alshxBinPath) {
+		os.RemoveAll(alshxBinPath)
+	}
+	download.DownloadFile(archivePath, remoteArchiveURL)
+	archive.Unzip(archivePath, alshxTempPath)
+	os.Rename(filepath.Join(alshxTempPath, "alshx-master", "scripts"), alshxBinPath)
+	os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
+
+	os.RemoveAll(archivePath)
+	os.RemoveAll(alshxTempPath)
 
 	scripts.Exec(logger, filepath.Join(alshxBinPath, script), script, scriptArgs)
 }
@@ -64,24 +80,6 @@ func getHomePath() string {
 		return os.Getenv("USERPROFILE")
 	}
 	return os.Getenv("HOME")
-}
-
-func updateBin(logger *logging.Logger) {
-	if files.Exists(commitHashPath) &&
-		files.ReadTextFile(commitHashPath) == latestCommitHash {
-		logger.Info("Commit Hash Match: Skipping")
-		return
-	}
-	logger.Log("Commit Hash Different: Downloading")
-	if files.Exists(alshxBinPath) {
-		os.RemoveAll(alshxBinPath)
-	}
-	download.DownloadFile(archivePath, remoteArchiveURL)
-	archive.Unzip(archivePath, alshxTempPath)
-	os.Rename(filepath.Join(alshxTempPath, "alshx-master", "scripts"), alshxBinPath)
-	os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
-
-	os.RemoveAll(alshxTempPath)
 }
 
 type args struct {
