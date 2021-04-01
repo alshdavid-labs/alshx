@@ -24,7 +24,7 @@ func execNode(
 		os.Exit(1)
 	}
 	installNodeModules(logger, folderPath)
-	cmdPath := []string{"node", config.Entrypoint}
+	cmdPath := []string{"node", filepath.Join(folderPath, config.Entrypoint)}
 	cmdPath = append(cmdPath, config.Args...)
 	cmdPath = append(cmdPath, args...)
 	logger.Info("Command:", cmdPath)

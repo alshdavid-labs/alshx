@@ -4,6 +4,7 @@ import (
 	"alshx/src/platform/logging"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 func execTsNode(
@@ -22,7 +23,7 @@ func execTsNode(
 		os.Exit(1)
 	}
 	installNodeModules(logger, folderPath)
-	cmdPath := []string{"npx", "ts-node", config.Entrypoint}
+	cmdPath := []string{"npx", "ts-node", filepath.Join(folderPath, config.Entrypoint)}
 	cmdPath = append(cmdPath, config.Args...)
 	cmdPath = append(cmdPath, args...)
 	logger.Info("Command:", cmdPath)

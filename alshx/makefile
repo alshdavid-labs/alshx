@@ -1,5 +1,5 @@
 run:
-  go run -tags prod ./src version
+	go run -tags prod ./src version
 
 build:
 	go build -o ./dist/alshx ./src
@@ -7,7 +7,7 @@ build:
 default:
 	rm -rf dist
 	rm -rf ./src/version.txt
-  date -u --iso-8601=minutes > ./src/version.txt
+	date -u --iso-8601=minutes > ./src/version.txt
 	env GOOS=linux GOARCH=arm go build -tags prod -o ./dist/alshx-linux-arm32 ./src/main.go
 	env GOOS=linux GOARCH=arm64 go build -tags prod -o ./dist/alshx-linux-arm64 ./src/main.go
 	env GOOS=linux GOARCH=386 go build -tags prod -o ./dist/alshx-linux-386 ./src/main.go

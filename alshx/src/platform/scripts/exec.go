@@ -44,7 +44,7 @@ func Exec(
 	var cmd *exec.Cmd
 
 	if meta.Language == "go" {
-		cmd = execGo(logger, cmd, meta, args)
+		cmd = execGo(logger, cmd, meta, args, folderPath)
 	} else if meta.Language == "ts-node" {
 		cmd = execTsNode(logger, cmd, meta, args, folderPath)
 	} else if meta.Language == "node" {
@@ -56,7 +56,6 @@ func Exec(
 		return
 	}
 
-	cmd.Dir = folderPath
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

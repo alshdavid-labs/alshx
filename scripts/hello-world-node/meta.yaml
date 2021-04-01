@@ -1,0 +1,3 @@
+version: 1
+language: node
+entrypoint: src/index.js

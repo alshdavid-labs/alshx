@@ -4,6 +4,7 @@ import (
 	"alshx/src/platform/logging"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 func execShell(
@@ -14,11 +15,11 @@ func execShell(
 	folderPath string,
 ) *exec.Cmd {
 	if !hasCommand("sh") {
-		logger.Log("Shell is not installed")
+		logger.Log("Shell is not available")
 		os.Exit(1)
 	}
 
-	cmdPath := []string{"sh", config.Entrypoint}
+	cmdPath := []string{"sh", filepath.Join(folderPath, config.Entrypoint)}
 	cmdPath = append(cmdPath, config.Args...)
 	cmdPath = append(cmdPath, args...)
 	logger.Info("Command:", cmdPath)
