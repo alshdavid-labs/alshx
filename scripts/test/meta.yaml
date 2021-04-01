@@ -1,3 +1,2 @@
-language: go
-action: compile
-entrypoint: src/main.go
+language: eval
+entrypoint: go run src/main.go

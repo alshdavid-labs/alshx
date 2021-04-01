@@ -1,3 +1,2 @@
 language: shell
-action: run
 entrypoint: random-string.sh

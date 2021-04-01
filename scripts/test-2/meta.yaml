@@ -1,3 +1,2 @@
-language: commands
-action: run
+language: eval
 command: ts-node ./src/index.ts

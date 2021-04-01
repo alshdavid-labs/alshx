@@ -20,11 +20,10 @@ func Exec(
 	config := &Meta{}
 	configBytes, _ := os.ReadFile(filepath.Join(folderPath, "meta.yaml"))
 	yaml.UnmarshalStrict(configBytes, config)
-	config.Entrypoint = filepath.Join(strings.Split(config.Entrypoint, "/")...)
+	// config.Entrypoint = filepath.FromSlash(config.Entrypoint)
 
 	logger.Info("=== Script Details ===")
-	logger.Info("Language", config.Language)
-	logger.Info("Action", config.Action)
+	logger.Info("Language:", config.Language)
 	logger.Info("Entrypoint:", config.Entrypoint)
 	logger.Info("Command:", config.Entrypoint)
 
@@ -32,7 +31,7 @@ func Exec(
 
 	if config.Language == "go" {
 		cmd = exec.Command("go", "run", config.Entrypoint)
-	} else if config.Language == "commands" {
+	} else if config.Language == "eval" {
 		if files.NotExists(filepath.Join(folderPath, "node_modules")) {
 			logger.Log("Installing Node Modules")
 			yarn := exec.Command("yarn")

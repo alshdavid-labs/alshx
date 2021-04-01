@@ -36,7 +36,11 @@ func main() {
 	var cmdArgs, script, scriptArgs = getArgs()
 	var logger = logging.NewLogger(cmdArgs.verbose)
 
-	logger.Info("CurrentHash:", github.LatestCommitHash())
+	if latestCommitHash == "" {
+		logger.Log("Error: Unable to get latest commit hash")
+		os.Exit(1)
+	}
+	logger.Info("CurrentHash:", latestCommitHash)
 	logger.Info("DirectoryPath:", alshxPath)
 	logger.Info("Verbose:", cmdArgs.verbose)
 	logger.Info("Script:", script)
