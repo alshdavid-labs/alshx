@@ -4,7 +4,6 @@ import (
 	"alshx/src/platform/archive"
 	"alshx/src/platform/download"
 	"alshx/src/platform/files"
-	"alshx/src/platform/github"
 	"alshx/src/platform/logging"
 	"alshx/src/platform/scripts"
 	"fmt"
@@ -16,7 +15,8 @@ import (
 )
 
 var version = "2"
-var latestCommitHash = github.LatestCommitHash()
+
+// var latestCommitHash = github.LatestCommitHash()
 var homePath = getHomePath()
 var alshxPath = filepath.Join(homePath, ".alshx")
 var alshxBinPath = filepath.Join(alshxPath, "bin")
@@ -53,12 +53,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	if latestCommitHash == "" {
-		logger.Log("Error: Unable to get latest commit hash")
+	if script == "update" {
+		updateStash(logger)
 		os.Exit(1)
 	}
 
-	logger.Info("CurrentHash:", latestCommitHash)
+	// if latestCommitHash == "" {
+	// 	logger.Log("Error: Unable to get latest commit hash")
+	// 	os.Exit(1)
+	// }
+
+	// logger.Info("CurrentHash:", latestCommitHash)
 	logger.Info("RootDirectory:", alshxPath)
 	logger.Info("Script:", script)
 	logger.Info("ScriptPath:", scriptPath)
@@ -69,21 +74,7 @@ func main() {
 	scripts.Exec(logger, scriptPath, scriptCachePath, script, scriptArgs)
 }
 
-func prep(logger *logging.Logger) {
-	if files.NotExists(alshxPath) {
-		os.Mkdir(alshxPath, filePermissions)
-	}
-
-	if files.Exists(alshxBinCachePath) &&
-		files.Exists(alshxBinPath) &&
-		files.Exists(commitHashPath) &&
-		files.ReadTextFile(commitHashPath) == latestCommitHash {
-		logger.Info("Commit Hash Match: Skipping")
-		return
-	}
-
-	logger.Log("Commit Hash Different: Downloading")
-
+func updateStash(logger *logging.Logger) {
 	if files.Exists(alshxBinCachePath) {
 		logger.Info("INFO: Deleting Bin Cache")
 		os.RemoveAll(alshxBinCachePath)
@@ -105,11 +96,28 @@ func prep(logger *logging.Logger) {
 		files.CopyDir(scriptsPath, alshxBinPath)
 	}
 
-	logger.Info("INFO: Updating commit hash")
+	logger.Info("INFO: Cleaning up")
 	os.RemoveAll(alshxTempPath)
 	os.RemoveAll(archivePath)
 	os.RemoveAll(commitHashPath)
-	os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
+}
+
+func prep(logger *logging.Logger) {
+	if files.NotExists(alshxPath) {
+		os.Mkdir(alshxPath, filePermissions)
+	}
+
+	if files.Exists(alshxBinCachePath) &&
+		files.Exists(alshxBinPath) &&
+		files.Exists(commitHashPath) {
+		// files.ReadTextFile(commitHashPath) == latestCommitHash {
+		logger.Info("Commit Hash Match: Skipping")
+		return
+	}
+
+	logger.Log("Commit Hash Different: Downloading")
+
+	// os.WriteFile(commitHashPath, []byte(latestCommitHash), filePermissions)
 }
 
 func getHomePath() string {
