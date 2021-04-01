@@ -93,12 +93,12 @@ func prep(logger *logging.Logger) {
 	download.DownloadFile(archivePath, remoteArchiveURL)
 	archive.Unzip(archivePath, alshxTempPath)
 	logger.Info("INFO: Creating bin cache folder")
-	files.CopyDir(filepath.Join(alshxTempPath, "alshx-master", "scripts"), alshxBinCachePath)
+	scriptsPath := filepath.Join(alshxTempPath, "alshx-master", "scripts")
+	files.CopyDir(scriptsPath, alshxBinCachePath)
 
 	if files.NotExists(alshxBinPath) {
 		logger.Info("INFO: Creating bin folder")
-		files.CopyDir(filepath.Join(alshxTempPath, "alshx-master", "scripts"), alshxBinPath)
-		os.RemoveAll(alshxTempPath)
+		files.CopyDir(scriptsPath, alshxBinPath)
 	}
 
 	logger.Info("INFO: Updating commit hash")

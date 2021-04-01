@@ -33,6 +33,7 @@ func Exec(
 	}
 
 	logger.Info("Language:", meta.Language)
+	logger.Info("Version:", meta.Version)
 	if meta.Entrypoint != "" {
 		logger.Info("Entrypoint:", meta.Entrypoint)
 	}
