@@ -34,14 +34,11 @@ func Exec(
 	var cmd *exec.Cmd
 
 	if config.Language == "go" {
-		cmd = exec.Command("go", "run", config.Entrypoint)
+		execGo(logger, cmd, config, args)
 	} else if config.Language == "ts-node" {
-		installNodeModules(logger, folderPath)
-		cmdPath := []string{"npx", "ts-node", config.Entrypoint}
-		cmdPath = append(cmdPath, config.Args...)
-		cmdPath = append(cmdPath, args...)
-		logger.Info("Command:", cmdPath)
-		cmd = exec.Command(cmdPath[0], cmdPath[1:]...)
+		execTsNode(logger, cmd, config, args, folderPath)
+	} else if config.Language == "node" {
+		execNode(logger, cmd, config, args, folderPath)
 	} else {
 		logger.Log("Unable to process script")
 		return
