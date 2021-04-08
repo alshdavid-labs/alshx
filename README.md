@@ -43,3 +43,12 @@ wget https://github.com/alshdavid/alshx/releases/latest/download/windows-amd64.z
 compact /u "windows-amd64.zip" /i /Q
 rm windows-amd64.zip
 ```
+
+
+## Updating
+
+Once you have the utils installed, to update to the latest version just run
+
+```bash
+alshx update
+```
