@@ -1,16 +1,45 @@
-To use these scripts, install alshx, first run
+# CLI Utils
 
-```
-sh <(curl -sL https://alshdavid.github.io/alshx/bin/alshx) --install /usr/local/bin
+## Installation
+
+### MacOS
+
+```bash
+mkdir -p "${HOME}/.local/alshx"
+cd "${HOME}/.local/alshx"
+wget https://github.com/alshdavid/alshx/releases/latest/download/darwin-amd64.zip
+unzip darwin-amd64.zip .
+rm -rf darwin-amd64.zip
 ```
 
-then use
+Make sure to add `$HOME/.local/alshx` to your `$PATH`
 
+```bash
+export PATH="${PATH}:${HOME}/.local/alshx"
 ```
-alshx [script_name] [...args]
-```
-eg:
 
+### Linux
+
+```bash
+mkdir -p "${HOME}/.local/alshx"
+cd "${HOME}/.local/alshx"
+wget https://github.com/alshdavid/alshx/releases/latest/download/linux-amd64.zip
+unzip linux-amd64.zip .
+rm -rf linux-amd64.zip
 ```
-alshx hello-world one two three
+
+Make sure to add `$HOME/.local/alshx` to your `$PATH`
+
+```bash
+export PATH="${PATH}:${HOME}/.local/alshx"
+```
+
+### Windows (INSTALL INSTRUCTIONS TODO)
+
+```powershell
+mkdir "%USERPROFILE%\.bin"
+cd "%USERPROFILE%\.bin"
+wget https://github.com/alshdavid/alshx/releases/latest/download/windows-amd64.zip
+compact /u "windows-amd64.zip" /i /Q
+rm windows-amd64.zip
 ```

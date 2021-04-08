@@ -1,3 +1,10 @@
+dist
+node_modules
+yarn.lock
+coverage
+sandbox
+builds
+
 # Compiled source #
 ###################
 *.com
@@ -6,12 +13,6 @@
 *.exe
 *.o
 *.so
-dist
-build
-node_modules
-yarn.lock
-package-lock.json
-version.txt
 
 # Packages #
 ############
@@ -25,6 +26,7 @@ version.txt
 *.rar
 *.tar
 *.zip
+*.tgz
 
 # Logs and databases #
 ######################

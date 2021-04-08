@@ -1,3 +1,0 @@
-version: 1
-language: shell
-entrypoint: src/script.sh
