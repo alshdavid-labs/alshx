@@ -5,6 +5,7 @@
 ### MacOS
 
 ```bash
+rm -rf "${HOME}/.local/alshx"
 mkdir -p "${HOME}/.local/alshx"
 cd "${HOME}/.local/alshx"
 wget https://github.com/alshdavid/alshx/releases/latest/download/darwin-amd64.zip
@@ -21,6 +22,7 @@ export PATH="${PATH}:${HOME}/.local/alshx"
 ### Linux
 
 ```bash
+rm -rf "${HOME}/.local/alshx"
 mkdir -p "${HOME}/.local/alshx"
 cd "${HOME}/.local/alshx"
 wget https://github.com/alshdavid/alshx/releases/latest/download/linux-amd64.zip
@@ -34,16 +36,18 @@ Make sure to add `$HOME/.local/alshx` to your `$PATH`
 export PATH="${PATH}:${HOME}/.local/alshx"
 ```
 
-### Windows (INSTALL INSTRUCTIONS TODO)
+### Windows
 
 ```powershell
-mkdir "%USERPROFILE%\.bin"
-cd "%USERPROFILE%\.bin"
-wget https://github.com/alshdavid/alshx/releases/latest/download/windows-amd64.zip
-compact /u "windows-amd64.zip" /i /Q
+cmd.exe /c rmdir /q /s "$env:USERPROFILE\.local\alshx"
+mkdir "$env:USERPROFILE/.local/alshx"
+cd "$env:USERPROFILE/.local/alshx"
+curl -sOL https://github.com/alshdavid/alshx/releases/latest/download/windows-amd64.zip
+tar -xf .\windows-amd64.zip
 rm windows-amd64.zip
 ```
 
+Be sure to add `%USERPROFILE%\.local\alshx` to your `%PATH%` directory
 
 ## Updating
 

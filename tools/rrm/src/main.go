@@ -11,6 +11,11 @@ import (
 
 func main() {
 	args := customflags.NewFlags()
+
+	if args.Version {
+		fmt.Println("Recursive Remove, probably the latest verison")
+		os.Exit(0)
+	}
 	crawl(args.Dir, args.Find, args.Dry)
 }
 

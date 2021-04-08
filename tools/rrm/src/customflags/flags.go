@@ -7,19 +7,24 @@ import (
 )
 
 type Flags struct {
-	Find map[string]bool
-	Dir  string
-	Dry  bool
+	Find    map[string]bool
+	Dir     string
+	Dry     bool
+	Version bool
 }
 
 func NewFlags() *Flags {
 	var findSlice ArrayFlags
 	dry := false
+	version := false
 	find := map[string]bool{}
 	dir, _ := os.Getwd()
 
 	flag.BoolVar(&dry, "dry", false, "")
 	flag.BoolVar(&dry, "d", false, "")
+
+	flag.BoolVar(&version, "version", false, "")
+	flag.BoolVar(&version, "v", false, "")
 
 	flag.Var(&findSlice, "target", "")
 	flag.Var(&findSlice, "t", "")
@@ -37,8 +42,9 @@ func NewFlags() *Flags {
 	}
 
 	return &Flags{
-		Find: find,
-		Dir:  dir,
-		Dry:  dry,
+		Find:    find,
+		Dir:     dir,
+		Dry:     dry,
+		Version: version,
 	}
 }
