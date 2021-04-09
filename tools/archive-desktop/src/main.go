@@ -19,6 +19,11 @@ func main() {
 	var args = flags.NewArgs()
 	var logger = logging.NewLogger(args.Verbose)
 
+	if args.Version {
+		logger.Log("Archive desktop, probably the latest verison")
+		os.Exit(0)
+	}
+
 	if args.Dry {
 		logger.Info("INFO: Dry Mode - No files will be moved")
 	}
