@@ -38,13 +38,10 @@ export PATH="${PATH}:${HOME}/.local/alshx"
 
 ### Windows
 
+Run the following command in PowerShell:
+
 ```powershell
-cmd.exe /c rmdir /q /s "$env:USERPROFILE\.local\alshx"
-mkdir "$env:USERPROFILE/.local/alshx"
-cd "$env:USERPROFILE/.local/alshx"
-curl -sOL https://github.com/alshdavid/alshx/releases/latest/download/windows-amd64.zip
-tar -xf .\windows-amd64.zip
-rm windows-amd64.zip
+(New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/alshdavid/alshx/master/install.ps1") | powershell -command -
 ```
 
 Be sure to add `%USERPROFILE%\.local\alshx` to your `%PATH%` directory
