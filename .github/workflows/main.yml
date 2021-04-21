@@ -18,6 +18,7 @@ jobs:
 
     - name: build and release
       run: |
+        set -e
         sh ./.github/scripts/test.sh
         sh ./.github/scripts/build.sh
         sh ./.github/scripts/release.sh
