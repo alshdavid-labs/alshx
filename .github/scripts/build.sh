@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -15,6 +15,8 @@ echo "Tag: ${VERSION}"
 rm -rf "${ROOT_DIR}/dist"
 cd "${ROOT_DIR}/tools"
 
+echo "Building Packages..."
+
 for d in */
 do
   cd "${ROOT_DIR}/tools/${d}"
@@ -22,6 +24,7 @@ do
   NAME=$(basename "${PWD}")
   OUT="${ROOT_DIR}/dist"
 
+  echo "Building package at ${PWD}"
   env GOOS=linux GOARCH=arm go build -ldflags="-s -w" -tags prod -o "${OUT}/linux-arm32/${NAME}" ./src
   env GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -tags prod -o "${OUT}/linux-arm64/${NAME}" ./src
   env GOOS=linux GOARCH=386 go build -ldflags="-s -w" -tags prod -o "${OUT}/linux-386/${NAME}" ./src

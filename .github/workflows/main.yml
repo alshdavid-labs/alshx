@@ -18,9 +18,10 @@ jobs:
 
     - name: build and release
       run: |
-        sh ./.github/scripts/test.sh
-        sh ./.github/scripts/build.sh
-        sh ./.github/scripts/release.sh
+        set -e
+        ./.github/scripts/test.sh
+        ./.github/scripts/build.sh
+        ./.github/scripts/release.sh
       env:
         CI: true
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
