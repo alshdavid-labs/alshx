@@ -3,6 +3,7 @@ name: Feature
 on:
   push:
     branches:
+    - '**'
     - '!master'
 
 jobs:
