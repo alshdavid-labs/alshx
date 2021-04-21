@@ -19,8 +19,8 @@ jobs:
     - name: build and test
       run: |
         set -e
-        sh ./.github/scripts/test.sh
-        sh ./.github/scripts/build.sh
+        ./.github/scripts/test.sh
+        ./.github/scripts/build.sh
       env:
         CI: true
         
