@@ -18,9 +18,9 @@ jobs:
         go-version: 1.16
 
     - name: build and release
-      run: 
-        - sh ./.github/scripts/test.sh
-        - sh ./.github/scripts/build.sh
+      run: |
+        sh ./.github/scripts/test.sh
+        sh ./.github/scripts/build.sh
       env:
         CI: true
         
