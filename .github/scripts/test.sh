@@ -6,6 +6,7 @@ ROOT_DIR="$( cd "$( dirname "${SCRIPT_DIR[0]}/../../.." )" &> /dev/null && pwd )
 
 cd "${ROOT_DIR}/tools"
 
+echo "Running Tests..."
 for d in */
 do
   cd "${ROOT_DIR}/tools/${d}"
