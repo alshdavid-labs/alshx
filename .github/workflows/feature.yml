@@ -1,4 +1,4 @@
-name: Release
+name: Feature
 
 on:
   push:
@@ -19,7 +19,8 @@ jobs:
 
     - name: build and release
       run: 
-        - sh ./.github/scripts/build-test.sh
+        - sh ./.github/scripts/test.sh
+        - sh ./.github/scripts/build.sh
       env:
         CI: true
         
