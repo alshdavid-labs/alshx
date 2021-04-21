@@ -3,8 +3,8 @@ name: Release
 on:
   push:
     branches:
-    - /refs/heads/*
-    - !master
+      - /refs/heads/*
+      - !master
 
 jobs:
   build:
