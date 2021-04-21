@@ -3,8 +3,7 @@ name: Feature
 on:
   push:
     branches:
-      - /refs/heads/*
-      - !master
+    - !master
 
 jobs:
   build:
