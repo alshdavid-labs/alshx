@@ -2,7 +2,8 @@ name: Release
 
 on:
   push:
-    branches: [ master ]
+    - /refs/heads/*
+    - !master
 
 jobs:
   build:
@@ -18,7 +19,5 @@ jobs:
     - name: build and release
       run: 
         - sh ./.github/scripts/build-test.sh
-        - sh ./.github/scripts/release.sh
       env:
         CI: true
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
