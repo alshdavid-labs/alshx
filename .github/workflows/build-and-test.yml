@@ -22,3 +22,4 @@ jobs:
         - sh ./.github/scripts/build-test.sh
       env:
         CI: true
+        
