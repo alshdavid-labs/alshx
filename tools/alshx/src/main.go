@@ -6,10 +6,10 @@ import (
 	"archivedesktop/src/flags"
 	"archivedesktop/src/github"
 	"archivedesktop/src/logging"
-	"archivedesktop/src/paths"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path"
 	"path/filepath"
 )
 
@@ -20,12 +20,15 @@ func main() {
 
 	if !args.Update && !args.Install {
 		fmt.Println("Alshx Command Line Utilities")
+		fmt.Println("alshx update")
+		fmt.Println("alshx update --path /usr/local/alshx")
 		os.Exit(0)
 	}
 
 	var alshxPath = args.Path
 	if alshxPath == "" {
-		alshxPath = filepath.Join(paths.GetHomePath(), ".local", "alshx")
+		e, _ := os.Executable()
+		alshxPath = filepath.Join(path.Dir(e))
 	}
 
 	fmt.Println("Alshx Command Line Utilities")
