@@ -26,7 +26,7 @@ rm -rf "${HOME}/.local/alshx"
 mkdir -p "${HOME}/.local/alshx"
 cd "${HOME}/.local/alshx"
 wget https://github.com/alshdavid/alshx/releases/latest/download/linux-amd64.zip
-unzip linux-amd64.zip .
+unzip linux-amd64.zip
 rm -rf linux-amd64.zip
 ```
 
