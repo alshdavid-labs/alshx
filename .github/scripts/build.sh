@@ -11,7 +11,7 @@ cd "${ROOT_DIR}/tools"
 
 echo "Building Packages..."
 
-if [ "$IN_BUILDKITE" = "true" ]; then
+if [ "$CI" = "true" ]; then
   find . -type f -exec sed -i "s/__VERSION__/${VERSION}/" {} +
 fi
 
