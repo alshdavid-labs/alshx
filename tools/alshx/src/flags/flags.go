@@ -8,6 +8,8 @@ type Flags struct {
 	Update  bool
 	Install bool
 	Verbose bool
+	Version bool
+	Dry     bool
 	Path    string
 }
 
@@ -15,10 +17,14 @@ func NewArgs() *Flags {
 	var update = false
 	var install = false
 	var verbose = false
+	var version = false
+	var dry = false
 	var path = ""
 
 	flag.BoolVar(&verbose, "verbose", false, "")
+	flag.BoolVar(&version, "version", false, "")
 	flag.StringVar(&path, "path", "", "")
+	flag.BoolVar(&dry, "dry", false, "")
 
 	flag.Parse()
 	var tail = flag.Args()
@@ -35,6 +41,8 @@ func NewArgs() *Flags {
 		Verbose: verbose,
 		Update:  update,
 		Install: install,
+		Version: version,
 		Path:    path,
+		Dry:     dry,
 	}
 }
