@@ -55,12 +55,22 @@ func main() {
 
 	logger.Log("50% Removing existing binaries")
 	binaries, _ := ioutil.ReadDir(alshxPath)
+
 	for _, file := range binaries {
-		os.RemoveAll(filepath.Join(alshxPath, file.Name()))
+		err = os.RemoveAll(filepath.Join(alshxPath, file.Name()))
+		if err != nil {
+			logger.Error("ERROR: Unable to remove directory:", alshxPath)
+			os.Exit(1)
+		}
 	}
 
 	logger.Log("75% Unpacking binaries")
-	os.MkdirAll(alshxPath, 0755)
+	err = os.MkdirAll(alshxPath, 0755)
+	if err != nil {
+		logger.Error("ERROR: Unable to make directory:", alshxPath)
+		os.Exit(1)
+	}
+
 	err = archive.Unzip(archivePath, alshxPath)
 	if err != nil {
 		logger.Error("ERROR: Unable to download archive")
