@@ -2,11 +2,11 @@ package main
 
 import (
 	"os"
-	handler_guid "random/src/cli/handlers/guid"
-	handler_help "random/src/cli/handlers/help"
-	handler_number "random/src/cli/handlers/number"
-	handler_string "random/src/cli/handlers/string"
-	handler_version "random/src/cli/handlers/version"
+	handler_guid "random/src/handlers/guid"
+	handler_help "random/src/handlers/help"
+	handler_number "random/src/handlers/number"
+	handler_string "random/src/handlers/string"
+	handler_version "random/src/handlers/version"
 	"random/src/platform/args"
 )
 
