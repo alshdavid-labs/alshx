@@ -4,18 +4,16 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 ROOT_DIR="$( cd "$( dirname "${SCRIPT_DIR[0]}/../../.." )" &> /dev/null && pwd )"
 
-YEAR="$(date -u +%y)"
-MONTH="$(date -u +%m)"
-DAY="$(date -u +%d)"
-HOUR="$(date -u +%H)"
-MINUTE="$(date -u +%M)"
-VERSION="${YEAR}-${MONTH}-${DAY}-${HOUR}-${MINUTE}"
 echo "Tag: ${VERSION}"
 
 rm -rf "${ROOT_DIR}/dist"
 cd "${ROOT_DIR}/tools"
 
 echo "Building Packages..."
+
+if [ "$CI" = "true" ]; then
+  find . -type f -exec sed -i "s/__VERSION__/${VERSION}/" {} +
+fi
 
 for d in */
 do
