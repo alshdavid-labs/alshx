@@ -14,15 +14,15 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.16
+        go-version: 1.18
 
     - name: build and release
       run: |
         set -e
-        source ./.github/scripts/version.sh
-        ./.github/scripts/test.sh
-        ./.github/scripts/build.sh
-        ./.github/scripts/release.sh
+        source ./.github/scripts/version.bash
+        bash ./.github/scripts/test.bash
+        bash ./.github/scripts/build.bash
+        bash ./.github/scripts/release.bash
       env:
         CI: true
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -14,12 +14,12 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.16
+        go-version: 1.18
 
     - name: test
       run: |
         set -e
-        ./.github/scripts/test.sh
+        bash ./.github/scripts/test.bash
       env:
         CI: true
         
@@ -31,13 +31,13 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.16
+        go-version: 1.18
 
     - name: build
       run: |
         set -e
-        source ./.github/scripts/version.sh
-        ./.github/scripts/build.sh
+        source ./.github/scripts/version.bash
+        bash ./.github/scripts/build.bash
       env:
         CI: true
         
