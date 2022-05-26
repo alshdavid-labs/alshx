@@ -1,12 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"rrm/src/customflags"
+	"strings"
 )
 
 func main() {
@@ -16,37 +18,79 @@ func main() {
 		fmt.Println("Recursive Remove, probably the latest verison")
 		os.Exit(0)
 	}
-	crawl(args.Dir, args.Find, args.Dry)
-}
 
-func crawl(dir string, targets map[string]bool, dry bool) {
-	fileInfo, _ := os.Stat(dir)
-	if !fileInfo.IsDir() {
-		fmt.Println("Target is not a folder")
-		os.Exit(1)
+	if len(args.Find) == 0 {
+		fmt.Println("No Arguments Specified")
+		fmt.Println("")
+		fmt.Println("Example:")
+		fmt.Println("  rrm -f node_modules -f .DS_Store ./")
+		fmt.Println("")
+		fmt.Println("This will find any file or folder with")
+		fmt.Println("the name s\"node_modeles\" and \".DS_Store\"")
+		fmt.Println("in the current directory")
+
+		os.Exit(0)
 	}
 
-	files, err := ioutil.ReadDir(dir)
+	fmt.Printf("Looking Within:\n")
+	fmt.Printf("  %s\n\n", args.Dir)
+
+	for dir := range args.Find {
+		fmt.Printf("Seeking:\n")
+		fmt.Printf("  - %s\n", dir)
+	}
+
+	foundItems := map[string]bool{}
+
+	fmt.Printf("\nFound:\n")
+	scan(foundItems, args.Find, args.Dir)
+
+	if len(foundItems) == 0 {
+		fmt.Printf("  Nothing to delete\n")
+		os.Exit(0)
+	}
+
+	if args.Interactive {
+		fmt.Printf("\nOk to delete? [Y/n] ")
+
+		reader := bufio.NewReader(os.Stdin)
+		input, _ := reader.ReadString('\n')
+
+		answer := strings.Trim(strings.Replace(strings.ToLower(input), "\n", "", -1), "")
+
+		if answer == "n" || answer == "no" {
+			os.Exit(0)
+			return
+		}
+	}
+
+	fmt.Printf("\nRemoved:\n")
+
+	for pathToDelete := range foundItems {
+		fmt.Printf("  %s\n", pathToDelete)
+		os.RemoveAll(pathToDelete)
+	}
+}
+
+func scan(foundItems map[string]bool, lookupNames map[string]bool, lookupDirectory string) {
+	files, err := ioutil.ReadDir(lookupDirectory)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, file := range files {
 		name := file.Name()
-		path := filepath.Join(dir, name)
-		if targets[name] {
-			if !dry {
-				fmt.Println("Delete:", path)
-				os.RemoveAll(path)
-			} else {
-				fmt.Println("DryDelete:", path)
-			}
+		path := filepath.Join(lookupDirectory, name)
+
+		if lookupNames[name] {
+			foundItems[path] = true
+			fmt.Printf("  %s\n", path)
+
 			continue
 		}
 
 		if file.IsDir() {
-			crawl(path, targets, dry)
-			continue
+			scan(foundItems, lookupNames, path)
 		}
 	}
 }
