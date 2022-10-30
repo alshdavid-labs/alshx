@@ -7,6 +7,8 @@ cd "$ROOT_DIR"
 
 rm -rf "${ROOT_DIR}/dist"
 
+RELEASE_DATE=$(date -u --iso-8601=seconds)
+
 env GOOS=linux GOARCH=arm PROD=true make
 env GOOS=linux GOARCH=arm64 PROD=true make
 env GOOS=linux GOARCH=amd64 PROD=true make

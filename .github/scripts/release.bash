@@ -22,5 +22,5 @@ done
 cd "${ROOT_DIR}"
 
 if [ "$CI" = "true" ]; then
-  gh release create "${VERSION}" -n "Automatically generated binaries" ./dist/*.zip
+  gh release create "${VERSION}" -n "Automatically generated binaries" ./dist/*.tar.gz
 fi
