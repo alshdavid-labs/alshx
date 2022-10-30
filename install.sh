@@ -44,7 +44,9 @@ if [ "$FILENAME" = "NULL" ]; then
   exit 1
 fi
 
-if [ "$TEMP_DIR" = "" ] && [ -d "/tmp" ]; then
+if ! [ "$TMPDIR" = "" ]; then
+  TEMP_DIR="$TMPDIR"
+elif [ -d "/tmp" ]; then
   TEMP_DIR="/tmp/"
 else
   echo "Unable to find temp directory"
@@ -89,6 +91,6 @@ sudo rm -r -f "$TEMP_DIR$FILENAME"
 export PATH=/usr/local/alshx:$PATH
 
 echo
-echo -e "Add this to your profile: (/etc/profile or /etc/zprofile)"
-echo -e "    export PATH=$OUT_DIR:\$PATH"
+echo "Add this to your profile: (/etc/profile or /etc/zprofile)"
+echo "    export PATH=$OUT_DIR:\$PATH"
 echo
