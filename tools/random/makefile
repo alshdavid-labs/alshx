@@ -23,7 +23,10 @@ else
 	BIN_NAME := dev-$(PROJECT_NAME)
 endif
 
-ifeq ($(OS),Windows_NT)
+
+ifeq (${GOOS},windows)
+	BIN_NAME := $(BIN_NAME).exe
+else ifeq ($(shell go env GOOS),windows)
 	BIN_NAME := $(BIN_NAME).exe
 endif
 
