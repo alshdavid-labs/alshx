@@ -2,12 +2,13 @@ package main
 
 import (
 	"os"
-	handler_guid "random/src/handlers/guid"
-	handler_help "random/src/handlers/help"
-	handler_number "random/src/handlers/number"
-	handler_string "random/src/handlers/string"
-	handler_version "random/src/handlers/version"
-	"random/src/platform/args"
+
+	handler_guid "github.com/alshdavid/alshx/tools/random/cmd/handlers/guid"
+	handler_help "github.com/alshdavid/alshx/tools/random/cmd/handlers/help"
+	handler_number "github.com/alshdavid/alshx/tools/random/cmd/handlers/number"
+	handler_string "github.com/alshdavid/alshx/tools/random/cmd/handlers/string"
+	handler_version "github.com/alshdavid/alshx/tools/random/cmd/handlers/version"
+	"github.com/alshdavid/alshx/tools/random/platform/args"
 )
 
 var Routes = struct {

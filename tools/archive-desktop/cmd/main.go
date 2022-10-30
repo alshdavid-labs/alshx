@@ -1,14 +1,15 @@
 package main
 
 import (
-	"archivedesktop/src/platform/flags"
-	"archivedesktop/src/platform/logging"
-	"archivedesktop/src/platform/paths"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/alshdavid/alshx/tools/archive_desktop/platform/flags"
+	"github.com/alshdavid/alshx/tools/archive_desktop/platform/logging"
+	"github.com/alshdavid/alshx/tools/archive_desktop/platform/paths"
 )
 
 func main() {

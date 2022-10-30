@@ -1,7 +1,7 @@
 package handler_help
 
 import (
-	"random/src/platform/colors"
+	"github.com/alshdavid/alshx/tools/random/platform/colors"
 )
 
 func Handler() {

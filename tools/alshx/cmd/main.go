@@ -1,17 +1,18 @@
 package main
 
 import (
-	"archivedesktop/src/archive"
-	"archivedesktop/src/download"
-	"archivedesktop/src/flags"
-	"archivedesktop/src/github"
-	"archivedesktop/src/logging"
-	"archivedesktop/src/meta"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
+
+	"github.com/alshdavid/alshx/tools/alshx/platform/archive"
+	"github.com/alshdavid/alshx/tools/alshx/platform/download"
+	"github.com/alshdavid/alshx/tools/alshx/platform/flags"
+	"github.com/alshdavid/alshx/tools/alshx/platform/github"
+	"github.com/alshdavid/alshx/tools/alshx/platform/logging"
+	"github.com/alshdavid/alshx/tools/alshx/platform/meta"
 )
 
 func main() {
@@ -20,7 +21,7 @@ func main() {
 	var logger = logging.NewLogger(args.Verbose)
 
 	if !args.Update && !args.Install {
-		fmt.Println("Alshx Command Line Utilities Version:", meta.Version)
+		fmt.Println("Alshx Command Line Utilities Version:", meta.Version, meta.ReleaseDate)
 		fmt.Println("")
 		fmt.Println("Usage:")
 		fmt.Println("alshx update")

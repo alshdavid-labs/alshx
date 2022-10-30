@@ -1,4 +1,4 @@
-module random
+module github.com/alshdavid/alshx/tools/random
 
 go 1.16
 

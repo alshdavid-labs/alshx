@@ -1,2 +1,38 @@
-default:
-	go build -ldflags="-s -w" -o dist/alshx src/main.go
+ifndef OUTDIR
+	OUTDIR := ./dist
+else
+	OUTDIR := ${OUTDIR}
+endif
+
+ifndef RELEASE_DATE
+	RELEASE_DATE := $(shell date -u --iso-8601=seconds)
+else
+	RELEASE_DATE := ${RELEASE_DATE}
+endif
+
+PROJECT_NAME := $(shell basename "$(CURDIR)")
+VERSION := $(shell cat ./VERSION)
+VERSION_FLAG := -X 'github.com/alshdavid/alshx/tools/$(PROJECT_NAME)/platform/meta.Version=$(VERSION)'
+RELEASE_DATE_FLAG := -X 'github.com/alshdavid/alshx/tools/$(PROJECT_NAME)/platform/meta.ReleaseDate=$(RELEASE_DATE)'
+
+ifeq (${PROD},true)
+	LD_FLAGS := ${LD_FLAGS} -s -w $(VERSION_FLAG) $(RELEASE_DATE_FLAG)
+	BIN_NAME := $(PROJECT_NAME)
+else
+	LD_FLAGS := ${LD_FLAGS} $(VERSION_FLAG) $(RELEASE_DATE_FLAG)
+	BIN_NAME := dev-$(PROJECT_NAME)
+endif
+
+ifeq ($(OS),Windows_NT)
+	BIN_NAME := $(BIN_NAME).exe
+endif
+
+default: build
+
+.PHONY: clean
+clean:
+	rm -r -f ./dist
+
+.PHONY: build
+build:
+	go build -ldflags="$(LD_FLAGS)" -o "$(OUTDIR)/$(BIN_NAME)" ./cmd/main.go

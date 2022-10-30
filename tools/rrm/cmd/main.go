@@ -7,8 +7,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"rrm/src/customflags"
 	"strings"
+
+	"github.com/alshdavid/alshx/tools/rrm/platform/customflags"
 )
 
 func main() {
