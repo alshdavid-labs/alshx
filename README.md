@@ -2,41 +2,18 @@
 
 ## Installation
 
-### MacOS
+### MacOS or Linux
 
 ```bash
-rm -rf "${HOME}/.local/alshx"
-mkdir -p "${HOME}/.local/alshx"
-cd "${HOME}/.local/alshx"
-wget https://github.com/alshdavid/alshx/releases/latest/download/darwin-amd64.zip
-unzip darwin-amd64.zip .
-rm -rf darwin-amd64.zip
+wget https://github.com/alshdavid/alshx/releases/latest/download/alshx-darwin-arm64.tar.gz
+rm -rf /usr/local/alshx
+mkdir /usr/local/alshx
+tar -C /usr/local/alshx -xzf alshx-darwin-arm64.tar.gz
+
+export PATH=/usr/local/alshx:$PATH
 ```
 
-Make sure to add `$HOME/.local/alshx` to your `$PATH`
-
-```bash
-export PATH="${PATH}:${HOME}/.local/alshx"
-```
-
-### Linux
-
-```bash
-rm -rf "${HOME}/.local/alshx"
-mkdir -p "${HOME}/.local/alshx"
-cd "${HOME}/.local/alshx"
-wget https://github.com/alshdavid/alshx/releases/latest/download/linux-amd64.zip
-unzip linux-amd64.zip
-rm -rf linux-amd64.zip
-```
-
-Make sure to add `$HOME/.local/alshx` to your `$PATH`
-
-```bash
-export PATH="${PATH}:${HOME}/.local/alshx"
-```
-
-### Windows
+### Windows 10 / 11
 
 Run the following command in PowerShell:
 

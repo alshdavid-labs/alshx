@@ -14,15 +14,18 @@ endif
 
 OUTDIR := $(CURDIR)/dist/$(GOOS)-$(GOARCH)
 
-clean:
-	rm -r -f ./dist
+default: clean build
 
-build:
+.PHONY: clean
+clean:
 	rm -r -f "$(OUTDIR)"
 
+.PHONY: build
+build:
+	rm -r -f "$(OUTDIR)"
 	$(foreach file, $(wildcard $(TOOLS_DIR)/*), \
 		echo ===== ; \
-		echo BUILDING $(file) ; \
+		echo BUILDING $(file) @ $(GOOS)-$(GOARCH) ; \
 		echo ----- ; \
 		cd "$(CURDIR)/$(file)" && \
 		env OUTDIR="$(OUTDIR)" make -s build; \
@@ -31,3 +34,19 @@ build:
 		echo ===== ; \
 		echo ;\
 	)
+
+.PHONY: upgrade
+upgrade:
+	$(foreach file, $(wildcard $(TOOLS_DIR)/*), \
+		echo ===== ; \
+		echo Upgrading $(file) ; \
+		echo ----- ; \
+		cd "$(CURDIR)/$(file)" && \
+		go get -u ./... && \
+		go mod tidy ; \
+		echo ----- ; \
+		echo COMPLETE ;\
+		echo ===== ; \
+		echo ;\
+	)
+

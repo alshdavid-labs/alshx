@@ -17,17 +17,16 @@ RELEASE_DATE_FLAG := -X 'github.com/alshdavid/alshx/tools/$(PROJECT_NAME)/platfo
 
 ifeq (${PROD},true)
 	LD_FLAGS := ${LD_FLAGS} -s -w $(VERSION_FLAG) $(RELEASE_DATE_FLAG)
-	BIN_NAME := $(PROJECT_NAME)
 else
 	LD_FLAGS := ${LD_FLAGS} $(VERSION_FLAG) $(RELEASE_DATE_FLAG)
-	BIN_NAME := dev-$(PROJECT_NAME)
 endif
 
-
 ifeq (${GOOS},windows)
-	BIN_NAME := $(BIN_NAME).exe
+	BIN_NAME := $(PROJECT_NAME).exe
 else ifeq ($(shell go env GOOS),windows)
-	BIN_NAME := $(BIN_NAME).exe
+	BIN_NAME := $(PROJECT_NAME).exe
+else
+	BIN_NAME := $(PROJECT_NAME)
 endif
 
 default: build
