@@ -3,9 +3,10 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 ROOT_DIR="$( cd "$( dirname "${SCRIPT_DIR[0]}/../../.." )" &> /dev/null && pwd )"
-VERSION="$(date -u --iso-8601=seconds)"
 
-echo "Tag: ${VERSION}"
+TAG="$(date -u +"v%Y.%m.%d.%H%M")"
+
+echo "Tag: ${TAG}"
 
 cd "${ROOT_DIR}/dist"
 
@@ -22,5 +23,5 @@ done
 cd "${ROOT_DIR}"
 
 if [ "$CI" = "true" ]; then
-  gh release create "${VERSION}" -n "Automatically generated binaries" ./dist/*.tar.gz
+  gh release create "${TAG}" -n "Automatically generated binaries" ./dist/*.tar.gz
 fi

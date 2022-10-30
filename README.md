@@ -18,7 +18,7 @@ export PATH=/usr/local/alshx:$PATH
 Run the following command in PowerShell:
 
 ```powershell
-(New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/alshdavid/alshx/master/install.ps1") | powershell -command -
+(New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/alshdavid/alshx/master/.github/installers/install.ps1") | powershell -command -
 ```
 
 Be sure to add `%USERPROFILE%\.local\alshx` to your `%PATH%` directory

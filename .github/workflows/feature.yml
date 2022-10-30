@@ -3,10 +3,10 @@ name: Feature
 on:
   push:
     branches-ignore:
-    - master
+    - main
 
-jobs:
-  test:
+jobs:        
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -16,26 +16,10 @@ jobs:
       with:
         go-version: 1.19
 
-    - name: test
-      run: |
-        set -e
-        bash ./.github/scripts/test.bash
-      env:
-        CI: true
-        
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.18
-
     - name: build
       run: |
         set -e
+        bash ./.github/scripts/test.bash
         bash ./.github/scripts/build.bash
       env:
         CI: true
