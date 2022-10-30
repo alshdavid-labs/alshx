@@ -23,5 +23,6 @@ done
 cd "${ROOT_DIR}"
 
 if [ "$CI" = "true" ]; then
+  echo Releasing to GitHub
   gh release create "${TAG}" -n "Automatically generated binaries" ./dist/*.tar.gz
 fi
