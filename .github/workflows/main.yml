@@ -19,7 +19,6 @@ jobs:
     - name: build and release
       run: |
         set -e
-        source ./.github/scripts/version.bash
         bash ./.github/scripts/test.bash
         bash ./.github/scripts/build.bash
         bash ./.github/scripts/release.bash

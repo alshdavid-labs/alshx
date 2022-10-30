@@ -36,7 +36,6 @@ jobs:
     - name: build
       run: |
         set -e
-        source ./.github/scripts/version.bash
         bash ./.github/scripts/build.bash
       env:
         CI: true
