@@ -18,4 +18,5 @@ env GOOS=darwin GOARCH=amd64 PROD=true make
 env GOOS=darwin GOARCH=arm64 PROD=true make
 
 env GOOS=windows GOARCH=amd64 PROD=true make
+env GOOS=windows GOARCH=arm64 PROD=true make
 # env GOOS=windows GOARCH=386 PROD=true make
