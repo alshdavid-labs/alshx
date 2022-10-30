@@ -3,6 +3,16 @@
 echo "Alshx Linux and MacOS Installer"
 echo 
 
+echo "Script requires sudo permissions"
+sudo echo &> /dev/null
+
+if ! [ "$?" = "0" ]; then
+  echo "Failed to obtain sudo permissions"
+  exit 1
+fi
+
+echo
+
 LINK="https://github.com/alshdavid/alshx/releases/latest/download"
 FILENAME="NULL"
 OUT_DIR="/usr/local/alshx"
