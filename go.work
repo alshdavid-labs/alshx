@@ -1,8 +1,10 @@
 go 1.18
 
 use (
+	./kit
 	./tools/alshx
 	./tools/archive-desktop
 	./tools/random
 	./tools/rrm
+	./tools/envm
 )
