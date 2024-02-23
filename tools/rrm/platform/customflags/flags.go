@@ -20,8 +20,8 @@ func NewFlags() *Flags {
 	find := map[string]bool{}
 	dir, _ := os.Getwd()
 
-	flag.BoolVar(&interactive, "interactive", false, "")
-	flag.BoolVar(&interactive, "i", false, "")
+	flag.BoolVar(&interactive, "interactive", true, "")
+	flag.BoolVar(&interactive, "i", true, "")
 
 	flag.BoolVar(&version, "version", false, "")
 	flag.BoolVar(&version, "v", false, "")

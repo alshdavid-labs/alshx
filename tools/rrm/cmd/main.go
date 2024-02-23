@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -76,7 +75,8 @@ func main() {
 func scan(foundItems map[string]bool, lookupNames map[string]bool, lookupDirectory string) {
 	files, err := ioutil.ReadDir(lookupDirectory)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("  SKIP: %s\n", lookupDirectory)
+		return
 	}
 
 	for _, file := range files {
@@ -85,8 +85,7 @@ func scan(foundItems map[string]bool, lookupNames map[string]bool, lookupDirecto
 
 		if lookupNames[name] {
 			foundItems[path] = true
-			fmt.Printf("  %s\n", path)
-
+			fmt.Printf("  HIT:  %s\n", path)
 			continue
 		}
 
